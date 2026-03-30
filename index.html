@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Chat com Robô</title>
+
+<style>
+    body {
+        font-family: Arial;
+        background: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .chat-container {
+        width: 400px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-box {
+        height: 400px;
+        padding: 10px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .message {
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+        max-width: 80%;
+    }
+
+    .user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+    }
+
+    .bot {
+        background: #e5e5ea;
+        align-self: flex-start;
+    }
+
+    .input-area {
+        display: flex;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        outline: none;
+    }
+
+    button {
+        padding: 10px;
+        border: none;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #0056b3;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+    <div id="chat" class="chat-box"></div>
+
+    <div class="input-area">
+        <input type="text" id="input" placeholder="Digite sua mensagem..." />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+</div>
+
+<script>
+function addMessage(text, sender) {
+    const chat = document.getElementById("chat");
+
+    const message = document.createElement("div");
+    message.classList.add("message", sender);
+    message.innerText = text;
+
+    chat.appendChild(message);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function botResponse(userText) {
+    return "Olá, me chamo Claudia e sou a secretária do Dr Paulo, para começarmos seu atendimento, informe seu nome e os principais sintomas que esta sentindo";
+}
+
+function sendMessage() {
+    const input = document.getElementById("input");
+    const text = input.value.trim();
+
+    if (text === "") return;
+
+    addMessage(text, "user");
+
+    setTimeout(() => {
+        const response = botResponse(text);
+        addMessage(response, "bot");
+    }, 500);
+
+    input.value = "";
+}
+
+document.getElementById("input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
+});
+</script>
+
+</body>
+</html>
