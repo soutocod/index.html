@@ -107,7 +107,7 @@ function botResponse(userText) {
     return "Olá, me chamo Maria e sou a secretária do Dr Paulo, para começarmos seu atendimento, informe seu nome e os principais sintomas que esta sentindo";
 }
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById("input");
     const text = input.value.trim();
 
@@ -115,12 +115,26 @@ function sendMessage() {
 
     addMessage(text, "user");
 
-    setTimeout(() => {
-        const response = botResponse(text);
-        addMessage(response, "bot");
-    }, 500);
-
     input.value = "";
+
+    try {
+        const response = await fetch("https://SEU-WEBHOOK-AQUIhttps://soutocod.app.n8n.cloud/webhook-test/a72f0aab-d586-4166-be2f-d2f485c3e813", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: text
+            })
+        });
+
+        const data = await response.json();
+
+        addMessage(data.reply, "bot");
+
+    } catch (error) {
+        addMessage("Erro ao conectar com o servidor 😢", "bot");
+    }
 }
 
 document.getElementById("input").addEventListener("keypress", function(e) {
